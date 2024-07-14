@@ -1,0 +1,41 @@
+/* Custom styles for the Login component */
+.container {
+    max-width: 400px;
+    margin: 0 auto; /* Center the container horizontally */
+    padding: 20px; /* Add some padding inside the container */
+    border-radius: 8px; /* Rounded corners for a softer look */
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
+    background-color: #f9f9f9; /* Light background color for the container */
+  }
+  
+  h2 {
+    margin-bottom: 20px;
+    font-size: 1.5rem; /* Adjust the font size */
+    color: #333; /* Darker color for better readability */
+  }
+  
+  .form-group label {
+    font-weight: bold; /* Make label text bold */
+    color: #555; /* Slightly lighter color for labels */
+  }
+  
+  .form-control {
+    border-radius: 4px; /* Rounded corners for form controls */
+    border: 1px solid #ccc; /* Light border color */
+    padding: 10px; /* Add padding inside form controls */
+  }
+  
+  .btn-primary {
+    background-color: #007bff; /* Primary button background color */
+    border-color: #007bff; /* Match border color with background */
+  }
+  
+  .btn-primary:disabled {
+    background-color: #6c757d; /* Disabled button background color */
+    border-color: #6c757d; /* Match border color with background */
+  }
+  
+  .text-danger {
+    color: #dc3545; /* Color for error messages */
+  }
+  
