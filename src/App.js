@@ -1,22 +1,40 @@
-import React from 'react';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import { AuthProvider } from './context/AuthContext';
-import Home from './components/Home';
-import Login from './components/Login';
+// src/App.js
+import React, { useState } from 'react';
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import PrivateRoute from './components/PrivateRoute';
-import 'bootstrap/dist/css/bootstrap.min.css';
+import Login from './components/Login';
+import Home from './components/Home';
+import { AuthProvider } from './context/AuthContext';
 
-const App = () => {
+function App() {
+  const [showLogin, setShowLogin] = useState(true);
+
+  const handleCloseLogin = () => {
+    setShowLogin(false);
+  };
+
   return (
-    <Router>
-      <AuthProvider>
+    <AuthProvider>
+      <Router>
         <Routes>
-          <Route path="/login" element={<Login />} />
-          <Route path="/" element={<PrivateRoute element={<Home />} />} />
+          <Route 
+            path="/home" 
+            element={
+              <PrivateRoute>
+                <Home />
+              </PrivateRoute>
+            } 
+          />
+          <Route 
+            path="/" 
+            element={
+              <Login show={showLogin} onClose={handleCloseLogin} />
+            } 
+          />
         </Routes>
-      </AuthProvider>
-    </Router>
+      </Router>
+    </AuthProvider>
   );
-};
+}
 
 export default App;

@@ -1,0 +1,96 @@
+/* Home.css */
+
+/* Container for the component */
+.container {
+  max-width: 1400px; /* Adjusted size for better layout */
+  margin: 0 auto;
+  padding: 20px; /* Added padding for better spacing */
+}
+
+/* Custom table styling */
+.custom-table {
+  border-collapse: separate;
+  border-spacing: 0;
+  padding-top:15px;
+  width: 100%; /* Ensure table takes full width of the container */
+}
+
+.custom-table thead th {
+  background-color: #007bff;
+  color: #ffffff;
+  font-weight: bold;
+  text-align: center;
+  justify-content: center;
+}
+
+.custom-table tbody tr:nth-child(even) {
+  background-color: #f2f2f2;
+}
+
+.custom-table td {
+  vertical-align: middle;
+  text-align: center; /* Center align content */
+  padding: 10px; /* Added padding for better spacing */
+}
+
+/* Styling for images and files */
+.image-preview {
+  height: 150px; /* Increased height */
+  width: 150px; /* Increased width */
+  object-fit: cover;
+}
+
+.file-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.file-preview {
+  width: 300px;
+  margin-bottom: 10px;
+}
+
+.download-link {
+  margin-top: 5px;
+  color: #007bff;
+  text-decoration: none;
+}
+
+.download-link:hover {
+  text-decoration: underline;
+}
+
+.link-preview {
+  color: #007bff;
+  text-decoration: underline;
+}
+
+.link-preview:hover {
+  text-decoration: none;
+}
+
+.password-container {
+  display: flex;
+  align-items: center;
+}
+
+.password-container .form-control {
+  flex: 1;
+}
+
+.password-container .btn {
+  margin-left: 10px;
+}
+
+.file-container {
+  display: flex;
+  align-items: center;
+  justify-content: center; /* Center align files */
+}
+
+.file-container .file-preview {
+  margin-right: 10px;
+  max-height: 150px; /* Ensure a max height for all file previews */
+  max-width: 150px; /* Ensure a max width for all file previews */
+}
