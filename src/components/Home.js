@@ -39,9 +39,11 @@ const Home = () => {
   const [tablePasswordVisibility, setTablePasswordVisibility] = useState({});
   const [modalPasswordVisibility, setModalPasswordVisibility] = useState(false);
 
+  const backendUrl = 'https://data-saving-backend-5j5m5rz3h-muhammad-abrars-projects-4365307e.vercel.app';
+
   const fetchData = useCallback(async () => {
     try {
-      const response = await axios.get('http://localhost:5000/data');
+      const response = await axios.get(`${backendUrl}/data`);
       setData(response.data);
     } catch (error) {
       console.error('Error fetching data:', error);
@@ -75,7 +77,6 @@ const Home = () => {
     dataToSend.append('password', password);
     dataToSend.append('description', description);
 
-    // Conditionally append files
     if (image && typeof image === 'object') dataToSend.append('image', image);
     if (audio && typeof audio === 'object') dataToSend.append('audio', audio);
     if (video && typeof video === 'object') dataToSend.append('video', video);
@@ -86,10 +87,10 @@ const Home = () => {
 
     try {
       if (editDataId) {
-        await axios.put(`http://localhost:5000/data/${editDataId}`, dataToSend);
+        await axios.put(`${backendUrl}/data/${editDataId}`, dataToSend);
         toast.success('Data updated successfully');
       } else {
-        await axios.post('http://localhost:5000/data', dataToSend);
+        await axios.post(`${backendUrl}/data`, dataToSend);
         toast.success('Data added successfully');
       }
       fetchData();
@@ -114,11 +115,11 @@ const Home = () => {
         link: data.link,
       });
       setFilePreviews({
-        image: data.image ? `http://localhost:5000${data.image}` : '',
-        audio: data.audio ? `http://localhost:5000${data.audio}` : '',
-        video: data.video ? `http://localhost:5000${data.video}` : '',
-        document: data.document ? `http://localhost:5000${data.document}` : '',
-        generalFile: data.generalFile ? `http://localhost:5000${data.generalFile}` : '',
+        image: data.image ? `${backendUrl}${data.image}` : '',
+        audio: data.audio ? `${backendUrl}${data.audio}` : '',
+        video: data.video ? `${backendUrl}${data.video}` : '',
+        document: data.document ? `${backendUrl}${data.document}` : '',
+        generalFile: data.generalFile ? `${backendUrl}${data.generalFile}` : '',
       });
       setFileNames({
         image: data.imageName || '',
@@ -165,7 +166,7 @@ const Home = () => {
 
   const handleDeleteData = async (id) => {
     try {
-      await axios.delete(`http://localhost:5000/data/${id}`);
+      await axios.delete(`${backendUrl}/data/${id}`);
       toast.success('Data deleted successfully');
       fetchData();
     } catch (error) {
@@ -237,7 +238,7 @@ const Home = () => {
               <td>
                 {item.image && (
                   <img 
-                    src={`http://localhost:5000${item.image}`} 
+                    src={`${backendUrl}${item.image}`} 
                     alt="Uploaded content" 
                     className="image-preview" 
                   />
@@ -246,8 +247,8 @@ const Home = () => {
               <td>
                 {item.audio && (
                   <div className="file-container">
-                    <audio controls src={`http://localhost:5000${item.audio}`} className="file-preview" />
-                    <a href={`http://localhost:5000${item.audio}`} download>
+                    <audio controls src={`${backendUrl}${item.audio}`} className="file-preview" />
+                    <a href={`${backendUrl}${item.audio}`} download>
                       <FaDownload /> {item.audioName}
                     </a>
                   </div>
@@ -256,8 +257,8 @@ const Home = () => {
               <td>
                 {item.video && (
                   <div className="file-container">
-                    <video controls src={`http://localhost:5000${item.video}`} className="file-preview" />
-                    <a href={`http://localhost:5000${item.video}`} download>
+                    <video controls src={`${backendUrl}${item.video}`} className="file-preview" />
+                    <a href={`${backendUrl}${item.video}`} download>
                       <FaDownload /> {item.videoName}
                     </a>
                   </div>
@@ -267,7 +268,7 @@ const Home = () => {
                 {item.document && (
                   <div className="file-container">
                     {getFileIcon(item.documentName)}
-                    <a href={`http://localhost:5000${item.document}`} download className="download-link">
+                    <a href={`${backendUrl}${item.document}`} download className="download-link">
                       <FaDownload /> {item.documentName}
                     </a>
                   </div>
@@ -277,26 +278,18 @@ const Home = () => {
                 {item.generalFile && (
                   <div className="file-container">
                     {getFileIcon(item.generalFileName)}
-                    <a href={`http://localhost:5000${item.generalFile}`} download className="download-link">
+                    <a href={`${backendUrl}${item.generalFile}`} download className="download-link">
                       <FaDownload /> {item.generalFileName}
                     </a>
                   </div>
                 )}
               </td>
               <td>
-                {item.link && (
-                  <a href={item.link} target="_blank" rel="noopener noreferrer" className="link-preview">
-                    {item.link}
-                  </a>
-                )}
+                <a href={item.link} target="_blank" rel="noopener noreferrer">{item.link}</a>
               </td>
               <td>
-                <Button variant="warning" size="sm" onClick={() => handleShowModal(item)}>
-                  Edit
-                </Button>
-                <Button variant="danger" size="sm" onClick={() => handleDeleteData(item._id)} className="ml-2">
-                  Delete
-                </Button>
+                <Button variant="warning" onClick={() => handleShowModal(item)}>Edit</Button>
+                <Button variant="danger" onClick={() => handleDeleteData(item._id)}>Delete</Button>
               </td>
             </tr>
           ))}
@@ -316,9 +309,9 @@ const Home = () => {
                 name="username"
                 value={formData.username}
                 onChange={handleInputChange}
-                placeholder="Enter username"
               />
             </Form.Group>
+
             <Form.Group controlId="formPassword">
               <Form.Label>Password</Form.Label>
               <div className="password-container">
@@ -327,13 +320,13 @@ const Home = () => {
                   name="password"
                   value={formData.password}
                   onChange={handleInputChange}
-                  placeholder="Enter password"
                 />
                 <Button variant="link" onClick={toggleModalPasswordVisibility}>
                   {modalPasswordVisibility ? <FaEye /> : <FaEyeSlash />}
                 </Button>
               </div>
             </Form.Group>
+
             <Form.Group controlId="formDescription">
               <Form.Label>Description</Form.Label>
               <Form.Control
@@ -342,60 +335,83 @@ const Home = () => {
                 name="description"
                 value={formData.description}
                 onChange={handleInputChange}
-                placeholder="Enter description"
               />
             </Form.Group>
+
             <Form.Group controlId="formImage">
               <Form.Label>Image</Form.Label>
-              <Form.Control type="file" name="image" onChange={handleFileUpload} />
-              {filePreviews.image && (
-                <img
-                  src={filePreviews.image}
-                  alt="Selected"
-                  className="image-preview mt-2"
-                />
-              )}
+              <Form.Control
+                type="file"
+                name="image"
+                accept="image/*"
+                onChange={handleFileUpload}
+              />
+              {filePreviews.image && <img src={filePreviews.image} alt="Preview" className="image-preview" />}
             </Form.Group>
+
             <Form.Group controlId="formAudio">
               <Form.Label>Audio</Form.Label>
-              <Form.Control type="file" name="audio" onChange={handleFileUpload} />
+              <Form.Control
+                type="file"
+                name="audio"
+                accept="audio/*"
+                onChange={handleFileUpload}
+              />
               {filePreviews.audio && (
-                <div className="file-container mt-2">
+                <div className="file-container">
                   <audio controls src={filePreviews.audio} className="file-preview" />
-                  <span>{fileNames.audio}</span>
+                  <div className="file-name">{fileNames.audio}</div>
                 </div>
               )}
             </Form.Group>
+
             <Form.Group controlId="formVideo">
               <Form.Label>Video</Form.Label>
-              <Form.Control type="file" name="video" onChange={handleFileUpload} />
+              <Form.Control
+                type="file"
+                name="video"
+                accept="video/*"
+                onChange={handleFileUpload}
+              />
               {filePreviews.video && (
-                <div className="file-container mt-2">
+                <div className="file-container">
                   <video controls src={filePreviews.video} className="file-preview" />
-                  <span>{fileNames.video}</span>
+                  <div className="file-name">{fileNames.video}</div>
                 </div>
               )}
             </Form.Group>
+
             <Form.Group controlId="formDocument">
               <Form.Label>Document</Form.Label>
-              <Form.Control type="file" name="document" onChange={handleFileUpload} />
+              <Form.Control
+                type="file"
+                name="document"
+                accept=".pdf,.doc,.docx,.xls,.xlsx"
+                onChange={handleFileUpload}
+              />
               {filePreviews.document && (
-                <div className="file-container mt-2">
+                <div className="file-container">
                   {getFileIcon(fileNames.document)}
-                  <span>{fileNames.document}</span>
+                  <div className="file-name">{fileNames.document}</div>
                 </div>
               )}
             </Form.Group>
+
             <Form.Group controlId="formGeneralFile">
               <Form.Label>General File</Form.Label>
-              <Form.Control type="file" name="generalFile" onChange={handleFileUpload} />
+              <Form.Control
+                type="file"
+                name="generalFile"
+                onChange={handleFileUpload}
+              />
               {filePreviews.generalFile && (
-                <div className="file-container mt-2">
+                <div className="file-container">
                   {getFileIcon(fileNames.generalFile)}
-                  <span>{fileNames.generalFile}</span>
+                  <div className="file-name">{fileNames.generalFile}</div>
                 </div>
               )}
             </Form.Group>
+
             <Form.Group controlId="formLink">
               <Form.Label>Link</Form.Label>
               <Form.Control
@@ -403,18 +419,14 @@ const Home = () => {
                 name="link"
                 value={formData.link}
                 onChange={handleInputChange}
-                placeholder="Enter link"
               />
             </Form.Group>
+
           </Form>
         </Modal.Body>
         <Modal.Footer>
-          <Button variant="secondary" onClick={handleCloseModal}>
-            Close
-          </Button>
-          <Button variant="primary" onClick={handleAddOrUpdateData}>
-            {editDataId ? 'Update Data' : 'Add Data'}
-          </Button>
+          <Button variant="secondary" onClick={handleCloseModal}>Close</Button>
+          <Button variant="primary" onClick={handleAddOrUpdateData}>{editDataId ? 'Update Data' : 'Add Data'}</Button>
         </Modal.Footer>
       </Modal>
     </div>
